@@ -5,6 +5,8 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id'         => 'basic',
     'basePath'   => dirname(__DIR__),
+    'defaultRoute' => 'site/login',
+    'language'   => 'ru-RU',
     'bootstrap'  => ['log'],
     'components' => [
         'assetManager' => [
@@ -33,7 +35,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user'         => [
-            'identityClass'   => 'app\models\User',
+            'identityClass'   => 'app\models\Users',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [

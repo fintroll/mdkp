@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -43,13 +44,20 @@ AppAsset::register($this);
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
-            ['label' => 'Login', 'url' => ['/site/login']]
+                '<li>'
+                . Html::beginForm(['/site/login'], 'post')
+                . Html::submitButton(
+                    'Войти',
+                    ['class' => 'btn btn-success']
+                )
+                . Html::endForm()
+                . '</li>'
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link']
+                    'Выйти (' . Yii::$app->user->identity->FIO. ')',
+                    ['class' => 'btn btn-warning']
                 )
                 . Html::endForm()
                 . '</li>'
