@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "479407875c975e7dbee0aefcb85e62d5",
-    "content-hash": "5c27dd23827e5c153817a7f3f5d227c6",
+    "hash": "02e5de9935c903ae6cf5d5bc783d9451",
+    "content-hash": "1ad816566707a6596752ef8d89dc6346",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -54,6 +54,59 @@
                 "mobile-first",
                 "responsive",
                 "web"
+            ]
+        },
+        {
+            "name": "bower-asset/bootstrap-material-design",
+            "version": "0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FezVrasta/bootstrap-material-design.git",
+                "reference": "0c6f8f3e9d48adef6add4fa3454f587324d2f2ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FezVrasta/bootstrap-material-design/zipball/0c6f8f3e9d48adef6add4fa3454f587324d2f2ab",
+                "reference": "0c6f8f3e9d48adef6add4fa3454f587324d2f2ab",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/css/material.min.css",
+                    "dist/js/material.min.js",
+                    "dist/css/ripples.min.css",
+                    "dist/js/ripples.min.js"
+                ],
+                "bower-asset-ignore": [
+                    "test",
+                    "screenshots",
+                    "demo",
+                    ".editorconfig",
+                    ".gitignore",
+                    ".jshintrc",
+                    ".travis.yml",
+                    "CONTRIBUTING.md",
+                    "Gruntfile.json",
+                    "index.html",
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ]
+            },
+            "license": [
+                "https://github.com/FezVrasta/bootstrap-material-design/blob/master/LICENSE.md"
+            ],
+            "description": "Material Design theme for Bootstrap 3",
+            "keywords": [
+                "android",
+                "bootstrap",
+                "design",
+                "google",
+                "material",
+                "theme"
             ]
         },
         {
@@ -297,6 +350,51 @@
                 "html"
             ],
             "time": "2013-11-30 08:25:19"
+        },
+        {
+            "name": "romdim/yii2-bootstrap-material",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/romdim/yii2-bootstrap-material.git",
+                "reference": "7bf0a8cd77205f95936d915352da9db5e0f7228c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/romdim/yii2-bootstrap-material/zipball/7bf0a8cd77205f95936d915352da9db5e0f7228c",
+                "reference": "7bf0a8cd77205f95936d915352da9db5e0f7228c",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap-material-design": "*",
+                "yiisoft/yii2": "*",
+                "yiisoft/yii2-bootstrap": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "romdim\\bootstrap\\material\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Romanos Tsouroplis",
+                    "email": "rom-dim@hotmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Composer package for implementing FezVrasta's bootstrap material design in Yii2.",
+            "keywords": [
+                "bootstrap",
+                "material",
+                "yii",
+                "yii2"
+            ],
+            "time": "2015-04-16 11:20:05"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -902,7 +1000,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "romdim/yii2-bootstrap-material": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
