@@ -90,3 +90,29 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
+.ticket-header .icon {
+    float: left;
+    font-size: 66px;
+    color: rgb(63, 81, 181);
+}
+
+.ticket-header .text-header {
+    margin-left: 77px;
+}
+
+.text-header h1 {
+    margin: 0;
+}
+
+.ticket-control-buttons {
+    margin-left: 77px;
+    margin-top: 10px;
+}
+
+.popover {
+    background: white !important;
+    color:black !important;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+

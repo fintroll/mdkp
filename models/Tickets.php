@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "TICKETS".
@@ -40,12 +41,33 @@ class Tickets extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['SUBJECT', 'DESCRIPTION', 'FID_CATEGORY', 'FID_CREATOR', 'FID_PERFORMER', 'FID_STATUS'], 'required'],
+            [['SUBJECT', 'DESCRIPTION', 'FID_CATEGORY'], 'required'],
             [['DESCRIPTION'], 'string'],
-            [['FID_CATEGORY', 'FID_CREATOR', 'FID_PERFORMER', 'FID_STATUS'], 'integer'],
+            [['FID_CATEGORY'], 'integer'],
             [['TIME_CREATE', 'TIME_UPDATE'], 'safe'],
             [['SUBJECT'], 'string', 'max' => 255]
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->FID_CREATOR = Yii::$app->user->id;
+            $this->FID_STATUS = 5;
+            $this->TIME_UPDATE = $this->getCurrentTimestamp();
+            return true;
+        } else {
+
+            $this->TIME_UPDATE = $this->getCurrentTimestamp();
+            return false;
+        }
+    }
+
+    public function getCurrentTimestamp()
+    {
+        $expression = new Expression('NOW()');
+        $now = (new \yii\db\Query)->select($expression)->scalar();
+        return $now;
     }
 
     /**
@@ -54,12 +76,12 @@ class Tickets extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ID_TICKET' => 'Код заявки',
+            'ID_TICKET' => 'Номер заявки',
             'SUBJECT' => 'Тема',
             'DESCRIPTION' => 'Текст заявки',
-            'FID_CATEGORY' => 'Код категории',
-            'FID_CREATOR' => 'Код заявителя',
-            'FID_PERFORMER' => 'Код исполнителя',
+            'FID_CATEGORY' => 'Категория',
+            'FID_CREATOR' => 'Заявитель',
+            'FID_PERFORMER' => 'Исполнитель',
             'FID_STATUS' => 'Статус',
             'TIME_CREATE' => 'Дата создания',
             'TIME_UPDATE' => 'Дата изменения',

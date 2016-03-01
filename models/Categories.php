@@ -44,6 +44,31 @@ class Categories extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getImage($id)
+    {
+        switch ($id) {
+            case 1 :
+                return 'gavel';
+            case 2 :
+                return 'bug_report';
+            case 3 :
+                return 'lightbulb_outline';
+            case 4 :
+                return 'language';
+            case 5 :
+                return 'ac_unit';
+            case 6 :
+                return 'add_shopping_cart';
+            case 7 :
+                return 'build';
+            case 8 :
+                return 'account_balance_wallet';
+            default :
+                return 'business';
+        }
+
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

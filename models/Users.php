@@ -12,6 +12,7 @@ use Yii;
  * @property string $PASSWORD
  * @property string $EMAIL
  * @property string $ROLE
+ * @property string $FIO
  *
  * @property EVENTS $Events
  * @property FILES[] $Files
