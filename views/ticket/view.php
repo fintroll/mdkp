@@ -142,7 +142,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                     <tr>
                         <td>
-                            <h4>Затраченное время</h4>
+                            <h4>С момента создания прошло: </h4>
                         </td>
                         <td>
                             <h4>
@@ -150,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $date1=date_create($model->TIME_CREATE);
                                     $date2=date_create($model->getCurrentTimestamp());
                                     $diff=date_diff($date1,$date2);
-                                    echo $diff->format('%d Day %h Hours %i Minute');
+                                    echo $diff->format('%d Дней %h Часов %i Минут');
                                 ?>
                             </h4>
                         </td>
