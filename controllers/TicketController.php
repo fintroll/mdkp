@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Categories;
+use app\models\Comments;
 use app\models\Statuses;
 use app\models\Users;
 use Yii;
@@ -68,12 +69,14 @@ class TicketController extends Controller
         $creator = Users::findOne(['ID_USER' => $ticket->FID_CREATOR]);
         $performers = ArrayHelper::map(Users::find()->where(['in', 'ROLE', ['aho_emp', 'aho_disp', 'aho_chief']])->all(), 'ID_USER', 'FIO');
         $statuses = ArrayHelper::map(Statuses::find()->all(), 'ID_STATUS', 'NAME_STATUS');
+        $comments = Comments::find()->joinWith('creator')->where(['FID_TICKET' => $ticket->ID_TICKET])->orderBy('TIME_CREATE DESC')->all();
         return $this->render('view', [
             'model' => $ticket,
             'category' => $category,
             'creator' => $creator,
             'performers' => $performers,
             'statuses' => $statuses,
+            'comments' => $comments
         ]);
     }
 
@@ -87,10 +90,9 @@ class TicketController extends Controller
 
             if ($ticket->save()) {
                 //$value = Users::findOne(['ID_USER' => $ticket->FID_PERFORMER])->FIO;
-                return ['output'=>$ticket->FID_PERFORMER, 'message'=>'Сохранено'];
-            }
-            else {
-                return ['output'=>'', 'message'=>''];
+                return ['output' => $ticket->FID_PERFORMER, 'message' => 'Сохранено'];
+            } else {
+                return ['output' => '', 'message' => ''];
             }
         }
     }
@@ -106,10 +108,25 @@ class TicketController extends Controller
 
             if ($ticket->save()) {
                 //$value = Statuses::findOne(['ID_STATUS' => $ticket->FID_STATUS])->NAME_STATUS;
-                return ['output'=>$ticket->FID_STATUS, 'message'=>'Сохранено'];
+                return ['output' => $ticket->FID_STATUS, 'message' => 'Сохранено'];
+            } else {
+                return ['output' => '', 'message' => ''];
             }
-            else {
-                return ['output'=>'', 'message'=>''];
+        }
+    }
+
+    public function actionSavedesc($id)
+    {
+        $ticket = $this->findModel($id);
+        if (isset($_POST['hasEditable'])) {
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $ticket->DESCRIPTION = $_POST['Description'];
+
+            if ($ticket->save()) {
+                return ['output' => $ticket->DESCRIPTION, 'message' => 'Сохранено'];
+            } else {
+                return ['output' => '', 'message' => ''];
             }
         }
     }

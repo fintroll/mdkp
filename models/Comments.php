@@ -49,4 +49,9 @@ class Comments extends \yii\db\ActiveRecord
             'TIME_CREATE' => 'Дата создания',
         ];
     }
+
+    public function getCreator()
+    {
+        return $this->hasOne(Users::className(), ['ID_USER' => 'FID_USER']);
+    }
 }

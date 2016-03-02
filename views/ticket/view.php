@@ -11,6 +11,7 @@ use kartik\editable\Editable;
 /* @var $creator app\models\Users */
 /* @var $performers array */
 /* @var $statuses array */
+/* @var $comments app\models\Comments[] */
 
 $this->title = $model->SUBJECT;
 //$this->params['breadcrumbs'][] = ['label' => 'Tickets', 'url' => ['index']];
@@ -37,8 +38,78 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     </div>
 
-
     <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Описание заявки</h4>
+            </div>
+            <div class="panel-body">
+                <h4><?=
+                    Editable::widget(
+                        [
+                            'name'=>'Description',
+                            'value' => $model->DESCRIPTION,
+                            'asPopover' => true,
+                            'header' => 'Описание заявки',
+                            'ajaxSettings'=> ['url' => \yii\helpers\Url::to(['ticket/savedesc', 'id'=>$model->ID_TICKET])],
+                            'inputType' => Editable::INPUT_TEXTAREA,
+                            'options' => ['class'=>'form-control','id'=>'desc'],
+                            'size'=>'lg',
+                            'pluginEvents' => [
+                                "editableSubmit"=>"function(event, val, form, jqXHR) {
+                                             $('#desc-targ').text(val);
+                                             }",
+                            ],
+                        ]
+                    );
+                    ?></h4>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Комментарии к заявке</h4>
+            </div>
+            <div class="panel-body">
+                <h4><?=
+                    Editable::widget(
+                        [
+                            'name'=>'Description',
+                            'value' => 'Добавить комментарий',
+                            'asPopover' => true,
+                            'header' => 'Описание заявки',
+                            'ajaxSettings'=> ['url' => \yii\helpers\Url::toRoute(['comment/create', 'id'=>$model->ID_TICKET])],
+                            'inputType' => Editable::INPUT_TEXTAREA,
+                            'editableValueOptions'=> ['class' => 'btn btn-primary btn-raised'],
+                            'options' => ['class'=>'form-control','id'=>'comments'],
+                            'size'=>'lg',
+                            'pluginEvents' => [
+                                "editableSubmit"=>"function(event, val, form, jqXHR) {
+                                $.ajax({
+                                    url: '".\yii\helpers\Url::toRoute(['comment/get', 'id'=>$model->ID_TICKET])."',
+                                    method: 'GET',
+                                    success: function (data, textStatus, jqXHR) {
+                                        $.pjax.reload({container:'#commentsgrid'});
+                                },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        alert(\"error\");
+                                    }
+                                });
+                                 }",
+                            ],
+                        ]
+                    );
+                    ?>
+                </h4>
+                <?php \yii\widgets\Pjax::begin(['id' => 'commentsgrid']); ?>
+                <div class="col-md-8">
+                    <?= Yii::$app->controller->renderPartial('_comments', ['comments'=>$comments]);?>
+                </div>
+                <?php \yii\widgets\Pjax::end(); ?>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 ">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Информация о заявке</h4>
@@ -131,8 +202,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 </table>
             </div>
     </div>
-    </div>
-    <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Даты</h4>
@@ -162,17 +231,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td>
                             <h4>
                                 <?php
-                                    $date1=date_create($model->TIME_CREATE);
-                                    $date2=date_create($model->getCurrentTimestamp());
-                                    $diff=date_diff($date1,$date2);
-                                    echo $diff->format('%d Дней %h Часов %i Минут');
+                                $date1=date_create($model->TIME_CREATE);
+                                $date2=date_create($model->getCurrentTimestamp());
+                                $diff=date_diff($date1,$date2);
+                                echo $diff->format('%d Дней %h Часов %i Минут');
                                 ?>
                             </h4>
                         </td>
                     </tr>
                 </table>
             </div>
+        </div>
     </div>
+
+
 
 
 </div>

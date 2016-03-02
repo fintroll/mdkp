@@ -125,4 +125,15 @@ a.desc:after {
 }
 
 
+.list-group .list-group-item .row-content {
+    width: 100% !important;
+}
+.list-group .list-group-separator:before {
+    width: 100% !important;
+}
+
+#comments-targ {
+    margin-left: 30px;
+}
+
 
