@@ -51,15 +51,21 @@ class Tickets extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
+
         if (parent::beforeSave($insert)) {
-            $this->FID_CREATOR = Yii::$app->user->id;
-            $this->FID_STATUS = 5;
-            $this->TIME_UPDATE = $this->getCurrentTimestamp();
+            if($this->isNewRecord) {
+                $this->FID_CREATOR = Yii::$app->user->id;
+                $this->FID_STATUS = 5;
+                $this->TIME_UPDATE = $this->getCurrentTimestamp();
+            } else {
+                $this->TIME_UPDATE = $this->getCurrentTimestamp();
+            }
             return true;
         } else {
-
-            $this->TIME_UPDATE = $this->getCurrentTimestamp();
-            return false;
+            if(!$this->isNewRecord) {
+                $this->TIME_UPDATE = $this->getCurrentTimestamp();
+            }
+            return true;
         }
     }
 

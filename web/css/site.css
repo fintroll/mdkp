@@ -105,7 +105,7 @@ a.desc:after {
 }
 
 .ticket-control-buttons {
-    margin-left: 77px;
+    margin-left: 66px;
     margin-top: 10px;
     margin-bottom: 50px;
 }
@@ -115,5 +115,14 @@ a.desc:after {
     color:black !important;
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.ticket-info td{
+    padding: 10px;
+}
+
+.ticket-info td:nth-child(odd) h4{
+    font-weight: 500;
+}
+
 
 

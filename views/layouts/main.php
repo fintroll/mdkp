@@ -34,7 +34,7 @@ AppAsset::register($this);
         'brandLabel' => 'МДКП',
         'brandUrl'   => Yii::$app->homeUrl,
         'options'    => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse ',
         ],
     ]);
     echo Nav::widget([
@@ -67,7 +67,7 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <div class="container">
+    <div class="container-fluid">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

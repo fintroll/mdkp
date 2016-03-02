@@ -10,7 +10,7 @@ $this->title = 'Создать заявку';
 $this->params['breadcrumbs'][] = ['label' => 'Заявки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Создать';
 ?>
-<div class="tickets-create">
+<div class="tickets-create col-md-6">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

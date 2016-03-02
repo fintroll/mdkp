@@ -77,6 +77,43 @@ class TicketController extends Controller
         ]);
     }
 
+    public function actionSaveperformer($id)
+    {
+        $ticket = $this->findModel($id);
+        if (isset($_POST['hasEditable'])) {
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $ticket->FID_PERFORMER = intval($_POST['Performer']);
+
+            if ($ticket->save()) {
+                //$value = Users::findOne(['ID_USER' => $ticket->FID_PERFORMER])->FIO;
+                return ['output'=>$ticket->FID_PERFORMER, 'message'=>'Сохранено'];
+            }
+            else {
+                return ['output'=>'', 'message'=>''];
+            }
+        }
+    }
+
+
+    public function actionSavestatus($id)
+    {
+        $ticket = $this->findModel($id);
+        if (isset($_POST['hasEditable'])) {
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $ticket->FID_STATUS = intval($_POST['Status']);
+
+            if ($ticket->save()) {
+                //$value = Statuses::findOne(['ID_STATUS' => $ticket->FID_STATUS])->NAME_STATUS;
+                return ['output'=>$ticket->FID_STATUS, 'message'=>'Сохранено'];
+            }
+            else {
+                return ['output'=>'', 'message'=>''];
+            }
+        }
+    }
+
     /**
      * Creates a new Tickets model.
      * If creation is successful, the browser will be redirected to the 'view' page.
