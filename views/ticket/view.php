@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'header' => 'Описание заявки',
                             'ajaxSettings'=> ['url' => \yii\helpers\Url::to(['ticket/savedesc', 'id'=>$model->ID_TICKET])],
                             'inputType' => Editable::INPUT_TEXTAREA,
-                            'options' => ['class'=>'form-control','id'=>'desc'],
+                            'options' => ['class'=>'form-control','id'=>'desc','disabled'=> $model->FID_STATUS == 0 ? 'disabled' : false],
                             'size'=>'lg',
                             'pluginEvents' => [
                                 "editableSubmit"=>"function(event, val, form, jqXHR) {
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'ajaxSettings'=> ['url' => \yii\helpers\Url::toRoute(['comment/create', 'id'=>$model->ID_TICKET])],
                             'inputType' => Editable::INPUT_TEXTAREA,
                             'editableValueOptions'=> ['class' => 'btn btn-primary btn-raised'],
-                            'options' => ['class'=>'form-control','id'=>'comments'],
+                            'options' => ['class'=>'form-control','id'=>'comments','disabled'=> $model->FID_STATUS == 0 ? 'disabled' : false],
                             'size'=>'lg',
                             'pluginEvents' => [
                                 "editableSubmit"=>"function(event, val, form, jqXHR) {
@@ -155,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'header' => 'Исполнитель',
                                         'inputType' => Editable::INPUT_DROPDOWN_LIST,
                                         'data' => $performers,
-                                        'options' => ['class'=>'form-control', 'id'=>'perfchange'],
+                                        'options' => ['class'=>'form-control', 'id'=>'perfchange','disabled'=> $model->FID_STATUS == 0 ? 'disabled' : false],
                                         'editableValueOptions'=> ['class' => 'btn btn-default'],
                                         'pluginEvents' => [
                                             "editableSubmit"=>"function(event, val, form, jqXHR) {
@@ -183,7 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'ajaxSettings'=> ['url' => \yii\helpers\Url::to(['ticket/savestatus', 'id'=>$model->ID_TICKET])],
                                     'inputType' => Editable::INPUT_DROPDOWN_LIST,
                                     'data' => $statuses,
-                                    'options' => ['class'=>'form-control','id'=>'stchange'],
+                                    'options' => ['class'=>'form-control','id'=>'stchange','disabled'=> $model->FID_STATUS == 0 ? 'disabled' : false],
                                     'editableValueOptions'=> ['class' => 'btn btn-default'],
                                     'pluginEvents' => [
                                         "editableSubmit"=>"function(event, val, form, jqXHR) {
@@ -224,6 +224,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= \kartik\file\FileInput::widget([
                     'name' => 'input-ru',
                     'language'=> 'ru',
+                    'options'=>['disabled'=> $model->FID_STATUS == 0 ? 'disabled' : false],
                     'pluginOptions' => ['uploadAsync' => true,
                         'showPreview'=> false,
                         'allowedFileExtensions'=> ['doc', 'docx', 'xls','xlsx'],
