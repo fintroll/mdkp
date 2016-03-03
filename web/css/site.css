@@ -135,5 +135,12 @@ a.desc:after {
 #comments-targ {
     margin-left: 30px;
 }
+#files-list-group .list-group-item .row-content .least-content {
+    top: 29px;
+}
+
+.grid-view table tbody > tr > td {
+    vertical-align: middle;
+}
 
 

@@ -12,6 +12,7 @@ use kartik\editable\Editable;
 /* @var $performers array */
 /* @var $statuses array */
 /* @var $comments app\models\Comments[] */
+/* @var $comments app\models\Files[] */
 
 $this->title = $model->SUBJECT;
 //$this->params['breadcrumbs'][] = ['label' => 'Tickets', 'url' => ['index']];
@@ -33,8 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-md-12">
         <p class="ticket-control-buttons btn-group btn-group-raised">
-            <?= Html::a('Взять в работу', ['delete', 'id' => $model->ID_TICKET], ['class' => 'btn ']) ?>
-            <?= Html::a('Заявка выполнена', ['delete', 'id' => $model->ID_TICKET], ['class' => 'btn btn-success']) ?>
+            <?php
+            if(in_array(Yii::$app->user->identity->ROLE,['aho_emp', 'aho_disp', 'aho_chief'])) {
+                echo Html::a('Взять в работу', ['take', 'id' => $model->ID_TICKET], ['class' => 'btn ']);
+            }?>
+            <?= Html::a('Заявка выполнена', ['close', 'id' => $model->ID_TICKET], ['class' => 'btn btn-success']) ?>
         </p>
     </div>
 
@@ -74,7 +78,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     Editable::widget(
                         [
                             'name'=>'Description',
-                            'value' => 'Добавить комментарий',
                             'asPopover' => true,
                             'header' => 'Описание заявки',
                             'ajaxSettings'=> ['url' => \yii\helpers\Url::toRoute(['comment/create', 'id'=>$model->ID_TICKET])],
@@ -84,16 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'size'=>'lg',
                             'pluginEvents' => [
                                 "editableSubmit"=>"function(event, val, form, jqXHR) {
-                                $.ajax({
-                                    url: '".\yii\helpers\Url::toRoute(['comment/get', 'id'=>$model->ID_TICKET])."',
-                                    method: 'GET',
-                                    success: function (data, textStatus, jqXHR) {
                                         $.pjax.reload({container:'#commentsgrid'});
-                                },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        alert(\"error\");
-                                    }
-                                });
                                  }",
                             ],
                         ]
@@ -190,24 +184,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'editableValueOptions'=> ['class' => 'btn btn-default'],
                                     'pluginEvents' => [
                                         "editableSubmit"=>"function(event, val, form, jqXHR) {
-                                        var statuses = ".json_encode($statuses)."
-                                         $('#stchange-targ').text(statuses[val]);
-                                         }",
+                                            var statuses = ".json_encode($statuses)."
+                                             $('#stchange-targ').text(statuses[val]);
+                                        }",
                                     ],
                                 ]
                             );
                             ?>
                         </td>
                     </tr>
-                </table>
-            </div>
-    </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Даты</h4>
-            </div>
-            <div class="panel-body">
-                <table class="ticket-info">
                     <tr>
                         <td>
                             <h4>Дата создания </h4>
@@ -224,22 +209,41 @@ $this->params['breadcrumbs'][] = $this->title;
                             <h4><?= $model->TIME_UPDATE ?></h4>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <h4>С момента создания прошло </h4>
-                        </td>
-                        <td>
-                            <h4>
-                                <?php
-                                $date1=date_create($model->TIME_CREATE);
-                                $date2=date_create($model->getCurrentTimestamp());
-                                $diff=date_diff($date1,$date2);
-                                echo $diff->format('%d Дней %h Часов %i Минут');
-                                ?>
-                            </h4>
-                        </td>
-                    </tr>
                 </table>
+            </div>
+    </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Файлы</h4>
+            </div>
+            <div class="panel-body">
+                <?php \yii\widgets\Pjax::begin(['id' => 'filesgrid']); ?>
+                <?= \kartik\file\FileInput::widget([
+                    'name' => 'input-ru',
+                    'language'=> 'ru',
+                    'pluginOptions' => ['uploadAsync' => true,
+                        'showPreview'=> false,
+                        'allowedFileExtensions'=> ['doc', 'docx', 'xls','xlsx'],
+                        'uploadUrl' => \yii\helpers\Url::toRoute(['file/upload','id'=>$model->ID_TICKET])
+                    ],
+                    'pluginEvents' => [
+                        'fileuploaded'=>  "function(event, data, previewId, index) {
+                            if(data.response == '1')
+                            {
+                                 $.pjax.reload({container:'#filesgrid'});
+                            }
+                            else
+                            {
+                                alert(data.response);
+                            }
+                         }",
+                    ],
+                ]);
+                ?>
+                <div>
+                    <?= Yii::$app->controller->renderPartial('_files', ['files'=>$files]);?>
+                </div>
+                <?php \yii\widgets\Pjax::end(); ?>
             </div>
         </div>
     </div>

@@ -4,24 +4,35 @@ namespace app\controllers;
 
 use app\models\Categories;
 use app\models\Comments;
+use app\models\Files;
 use app\models\Statuses;
 use app\models\Users;
 use Yii;
 use app\models\Tickets;
 use app\models\TicketsSearch;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * TicketController implements the CRUD actions for Tickets model.
- */
+
 class TicketController extends Controller
 {
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index','all','view','Saveperformer', 'Savestatus','Savedesc','Create','Close'],
+                'rules' => [
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -31,10 +42,7 @@ class TicketController extends Controller
         ];
     }
 
-    /**
-     * Lists all Tickets models.
-     * @return mixed
-     */
+
     public function actionIndex()
     {
         $searchModel = new TicketsSearch();
@@ -57,11 +65,7 @@ class TicketController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Tickets model.
-     * @param integer $id
-     * @return mixed
-     */
+
     public function actionView($id)
     {
         $ticket = $this->findModel($id);
@@ -70,13 +74,15 @@ class TicketController extends Controller
         $performers = ArrayHelper::map(Users::find()->where(['in', 'ROLE', ['aho_emp', 'aho_disp', 'aho_chief']])->all(), 'ID_USER', 'FIO');
         $statuses = ArrayHelper::map(Statuses::find()->all(), 'ID_STATUS', 'NAME_STATUS');
         $comments = Comments::find()->joinWith('creator')->where(['FID_TICKET' => $ticket->ID_TICKET])->orderBy('TIME_CREATE DESC')->all();
+        $files = Files::find()->joinWith('user')->where(['FID_TICKET' => $ticket->ID_TICKET])->orderBy('UPLOAD_TIME DESC')->all();
         return $this->render('view', [
             'model' => $ticket,
             'category' => $category,
             'creator' => $creator,
             'performers' => $performers,
             'statuses' => $statuses,
-            'comments' => $comments
+            'comments' => $comments,
+            'files' => $files
         ]);
     }
 
@@ -131,11 +137,7 @@ class TicketController extends Controller
         }
     }
 
-    /**
-     * Creates a new Tickets model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+
     public function actionCreate()
     {
         $model = new Tickets();
@@ -150,17 +152,24 @@ class TicketController extends Controller
         }
     }
 
-    /**
-     * Updates an existing Tickets model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
+
+    public function actionTake($id)
+    {
+        $model = $this->findModel($id);
+        $model->FID_STATUS = 3;
+        $model->FID_PERFORMER = Yii::$app->user->id;
+        if ($model->save()) {
+            return $this->redirect(['view', 'id' => $model->ID_TICKET]);
+        } else {
+            return $this->redirect(['view', 'id' => $model->ID_TICKET]);
+        }
+    }
+
+    public function actionClose($id)
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->save()) {
             return $this->redirect(['view', 'id' => $model->ID_TICKET]);
         } else {
             return $this->render('update', [
@@ -169,26 +178,9 @@ class TicketController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing Tickets model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
 
-    /**
-     * Finds the Tickets model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Tickets the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     protected function findModel($id)
     {
         if (($model = Tickets::findOne($id)) !== null) {

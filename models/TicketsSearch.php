@@ -19,8 +19,14 @@ class TicketsSearch extends Tickets
     {
         return [
             [['ID_TICKET', 'FID_CATEGORY', 'FID_CREATOR', 'FID_PERFORMER', 'FID_STATUS'], 'integer'],
-            [['SUBJECT', 'DESCRIPTION', 'TIME_CREATE', 'TIME_UPDATE'], 'safe'],
+            [['SUBJECT', 'DESCRIPTION', 'TIME_CREATE', 'TIME_UPDATE', 'status.NAME_STATUS', 'performer.FIO', 'category.NAME_CATEGORY'], 'safe'],
         ];
+    }
+
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['status.NAME_STATUS', 'performer.FIO', 'category.NAME_CATEGORY']);
     }
 
     /**
@@ -28,7 +34,7 @@ class TicketsSearch extends Tickets
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
+
         return Model::scenarios();
     }
 
@@ -46,7 +52,21 @@ class TicketsSearch extends Tickets
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        $dataProvider->sort->attributes['status.NAME_STATUS'] = [
+            'asc' => ['status.NAME_STATUS' => SORT_ASC],
+            'desc' => ['status.NAME_STATUS' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['performer.FIO'] = [
+            'asc' => ['performer.FIO' => SORT_ASC],
+            'desc' => ['performer.FIO' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['category.NAME_CATEGORY'] = [
+            'asc' => ['category.NAME_CATEGORY' => SORT_ASC],
+            'desc' => ['category.NAME_CATEGORY' => SORT_DESC],
+        ];
+        $query->joinWith(['category']);
+        $query->joinWith(['performer']);
+        $query->joinWith(['status']);
         $this->load($params);
 
         if (!$this->validate()) {
@@ -58,15 +78,16 @@ class TicketsSearch extends Tickets
         $query->andFilterWhere([
             'ID_TICKET' => $this->ID_TICKET,
             'FID_CATEGORY' => $this->FID_CATEGORY,
-            'FID_CREATOR' => $this->FID_CREATOR,
             'FID_PERFORMER' => $this->FID_PERFORMER,
             'FID_STATUS' => $this->FID_STATUS,
-            'TIME_CREATE' => $this->TIME_CREATE,
-            'TIME_UPDATE' => $this->TIME_UPDATE,
+
         ]);
 
         $query->andFilterWhere(['like', 'SUBJECT', $this->SUBJECT])
-            ->andFilterWhere(['like', 'DESCRIPTION', $this->DESCRIPTION]);
+            ->andFilterWhere(['like', 'DESCRIPTION', $this->DESCRIPTION])
+            ->andFilterWhere(['like', 'D_STATUSES.NAME_STATUS', $this->getAttribute('status.NAME_STATUS')])
+            ->andFilterWhere(['like', 'D_CATEGORIES.NAME_CATEGORY', $this->getAttribute('category.NAME_CATEGORY')])
+            ->andFilterWhere(['like', 'USERS.FIO', $this->getAttribute('performer.FIO')]);
 
         return $dataProvider;
     }

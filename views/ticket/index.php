@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\TicketsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tickets';
+$this->title = 'Все заявки';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tickets-index">
@@ -23,19 +23,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'ID_TICKET',
             'SUBJECT',
             'DESCRIPTION:ntext',
-            'FID_CATEGORY',
-            'FID_CREATOR',
-            // 'FID_PERFORMER',
-            // 'FID_STATUS',
-            // 'TIME_CREATE',
-            // 'TIME_UPDATE',
+            [
+                'attribute' => 'category.NAME_CATEGORY',
+                'value' => 'category.NAME_CATEGORY',
+                'filter' => Html::activeDropDownList($searchModel, 'category.NAME_CATEGORY', \yii\helpers\ArrayHelper::map(\app\models\Categories::find()->asArray()->all(), 'NAME_CATEGORY', 'NAME_CATEGORY'),['class'=>'form-control', 'prompt' => 'Все']),
+            ],
+            'performer.FIO',
+            [
+                'attribute' => 'status.NAME_STATUS',
+                'value' => 'status.NAME_STATUS',
+                'filter' => Html::activeDropDownList($searchModel, 'status.NAME_STATUS', \yii\helpers\ArrayHelper::map(\app\models\Statuses::find()->asArray()->all(), 'NAME_STATUS', 'NAME_STATUS'),['class'=>'form-control', 'prompt' => 'Все']),
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model, $key) {
+                        return Html::a('Просмотр', $url, ['class'=> 'btn btn-primary']);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 

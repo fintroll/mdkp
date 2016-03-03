@@ -26,32 +26,7 @@ class CommentController extends Controller
         ];
     }
 
-    /**
-     * Lists all Comments models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Comments::find(),
-        ]);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Comments model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
 
     /**
      * Creates a new Comments model.
@@ -68,18 +43,13 @@ class CommentController extends Controller
             $model->TEXT = $_POST['Description'];
 
             if ($model->save()) {
-                return ['output' => $model->TEXT, 'message' => 'Сохранено'];
+                return ['output' => $model->TEXT, 'message' => 'Комментарий сохранён'];
             } else {
                 return ['output' => '', 'message' => ''];
             }
         }
     }
 
-    public function actionGet($id)
-    {
-        $comments = Comments::find()->joinWith('creator')->where(['FID_TICKET' => $id])->orderBy('TIME_CREATE DESC')->all();
-        return $this->renderPartial('_comments',['comments'=>$comments]);
-    }
 
     /**
      * Updates an existing Comments model.
