@@ -49,7 +49,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'ID_USER' => 'Код пользователя',
             'USERNAME' => 'Имя пользователя',
             'PASSWORD' => 'Пароль',
-            'FIO' => 'ФИО',
+            'FIO' => 'ФИО Исполнителя',
             'EMAIL' => 'Адрес электронной почты',
             'ROLE' => 'Роль пользователя',
         ];
