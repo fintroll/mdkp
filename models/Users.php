@@ -92,7 +92,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return self::find(['USERNAME'=>$username])->one();
+        return self::findOne(['USERNAME'=>$username]);
     }
 
     /**

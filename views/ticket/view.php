@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'name'=>'Description',
                             'asPopover' => true,
-                            'header' => 'Описание заявки',
+                            'header' => ' Комментарий',
                             'ajaxSettings'=> ['url' => \yii\helpers\Url::toRoute(['comment/create', 'id'=>$model->ID_TICKET])],
                             'inputType' => Editable::INPUT_TEXTAREA,
                             'editableValueOptions'=> ['class' => 'btn btn-primary btn-raised'],
@@ -90,7 +90,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'size'=>'lg',
                             'pluginEvents' => [
                                 "editableSubmit"=>"function(event, val, form, jqXHR) {
-                                        $.pjax.reload({container:'#commentsgrid'});
+                                    console.log('123');
+                                    $.pjax.reload({container:'#commentsgrid'});
                                  }",
                             ],
                         ]

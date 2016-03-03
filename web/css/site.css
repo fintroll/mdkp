@@ -148,4 +148,7 @@ a.desc:after {
     color: black;
     font-weight: 500;
 }
+.popover-footer .btn+.btn {
+    margin-bottom: 10px;
+}
 
