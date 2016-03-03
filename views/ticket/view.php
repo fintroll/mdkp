@@ -35,10 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-12">
         <p class="ticket-control-buttons btn-group btn-group-raised">
             <?php
-            if(in_array(Yii::$app->user->identity->ROLE,['aho_emp', 'aho_disp', 'aho_chief'])) {
+            if(in_array(Yii::$app->user->identity->ROLE,['aho_emp', 'aho_disp', 'aho_chief']) && $model->FID_STATUS != 0) {
                 echo Html::a('Взять в работу', ['take', 'id' => $model->ID_TICKET], ['class' => 'btn ']);
-            }?>
-            <?= Html::a('Заявка выполнена', ['close', 'id' => $model->ID_TICKET], ['class' => 'btn btn-success']) ?>
+            }
+            if($model->FID_STATUS != 0){
+                Html::a('Заявка выполнена', ['close', 'id' => $model->ID_TICKET], ['class' => 'btn btn-success']);
+            }
+            ?>
         </p>
     </div>
 

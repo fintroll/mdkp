@@ -112,22 +112,22 @@ a.desc:after {
 
 .popover {
     background: white !important;
-    color:black !important;
+    color: black !important;
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.ticket-info td{
+.ticket-info td {
     padding: 10px;
 }
 
-.ticket-info td:nth-child(odd) h4{
+.ticket-info td:nth-child(odd) h4 {
     font-weight: 500;
 }
-
 
 .list-group .list-group-item .row-content {
     width: 100% !important;
 }
+
 .list-group .list-group-separator:before {
     width: 100% !important;
 }
@@ -135,6 +135,7 @@ a.desc:after {
 #comments-targ {
     margin-left: 30px;
 }
+
 #files-list-group .list-group-item .row-content .least-content {
     top: 29px;
 }
@@ -143,4 +144,8 @@ a.desc:after {
     vertical-align: middle;
 }
 
+.kv-editable-link {
+    color: black;
+    font-weight: 500;
+}
 

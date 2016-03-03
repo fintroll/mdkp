@@ -53,16 +53,16 @@ class TicketsSearch extends Tickets
             'query' => $query,
         ]);
         $dataProvider->sort->attributes['status.NAME_STATUS'] = [
-            'asc' => ['status.NAME_STATUS' => SORT_ASC],
-            'desc' => ['status.NAME_STATUS' => SORT_DESC],
+            'asc' => ['D_STATUSES.NAME_STATUS' => SORT_ASC],
+            'desc' => ['D_STATUSES.NAME_STATUS' => SORT_DESC],
         ];
         $dataProvider->sort->attributes['performer.FIO'] = [
-            'asc' => ['performer.FIO' => SORT_ASC],
-            'desc' => ['performer.FIO' => SORT_DESC],
+            'asc' => ['USERS.FIO' => SORT_ASC],
+            'desc' => ['USERS.FIO' => SORT_DESC],
         ];
         $dataProvider->sort->attributes['category.NAME_CATEGORY'] = [
-            'asc' => ['category.NAME_CATEGORY' => SORT_ASC],
-            'desc' => ['category.NAME_CATEGORY' => SORT_DESC],
+            'asc' => ['D_CATEGORIES.NAME_CATEGORY' => SORT_ASC],
+            'desc' => ['D_CATEGORIES.NAME_CATEGORY' => SORT_DESC],
         ];
         $query->joinWith(['category']);
         $query->joinWith(['performer']);

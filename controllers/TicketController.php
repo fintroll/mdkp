@@ -24,10 +24,10 @@ class TicketController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index','all','view','Saveperformer', 'Savestatus','Savedesc','Create','Close'],
+                'only' => ['index','all','view','saveperformer', 'savestatus','savedesc','create','close'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['index','all','view','saveperformer', 'savestatus','savedesc','create','close'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -169,6 +169,8 @@ class TicketController extends Controller
     {
         $model = $this->findModel($id);
 
+        $model->FID_STATUS = $model->FID_CREATOR == Yii::$app->user->id ? 0 : 1;
+        $model->FID_PERFORMER = $model->FID_CREATOR;
         if ($model->save()) {
             return $this->redirect(['view', 'id' => $model->ID_TICKET]);
         } else {
