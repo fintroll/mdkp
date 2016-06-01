@@ -31,11 +31,12 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'МДКП',
+        'brandLabel' => Html::img('/web/images/logo.png', ['class'=>'head-logo']),
         'brandUrl'   => Yii::$app->homeUrl,
         'options'    => [
             'class' => 'navbar-inverse ',
         ],
+        'innerContainerOptions' => ['class'=>'container-fluid'],
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

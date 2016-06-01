@@ -151,4 +151,11 @@ a.desc:after {
 .popover-footer .btn+.btn {
     margin-bottom: 10px;
 }
+.head-logo{
+    width: 143px;
+}
+
+.navbar-inverse {
+    background-color: #BBDEFB !important;
+}
 
